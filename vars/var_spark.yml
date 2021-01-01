@@ -1,0 +1,59 @@
+---
+# spark basic vars
+download_path: "files"    # your local download path
+spark_package_name: "spark-2.4.7-bin-hadoop2.7"
+spark_version: "2.4.7"                    # spark version
+spark_path: "/home/hadoop"                # install dir
+spark_config_path: "/home/hadoop/spark-{{spark_version}}/conf"
+
+spark_worker_path: "{{ spark_path }}/spark/worker"
+spark_log_path: "{{ spark_path }}/spark/logs"
+
+master_hostname: "{{ master_hostname }}"
+
+spark_hdfs_path: "hdfs://{{ master_hostname }}:{{ hdfs_port }}/spark/history_log"
+
+spark_create_path:
+  - "{{ spark_worker_path }}"
+  - "{{ spark_log_path }}"
+
+#scala vars
+scala_path: "{{ spark_path }}"
+scala_version: "2.12.12"              # scala version
+
+
+spark_master_port: 17077               #spark port
+spark_history_ui_port: 17777
+spark_web_port: 18080
+
+
+spark_properties:                     #property
+  - {
+      "name":"spark.master",
+      "value":"spark://{{ master_hostname }}:{{ spark_master_port }}"
+  }
+  - {
+      "name":"spark.eventLog.dir",
+      "value":"{{ spark_hdfs_path }}"
+  }
+  - {
+      "name":"spark.eventLog.compress",
+      "value":"true"
+  }
+  - {
+      "name":"spark.history.updateInterval",
+      "value":"5"
+  }
+  - {
+      "name":"spark.history.ui.port",
+      "value":"{{ spark_history_ui_port }}"
+  }
+  - {
+      "name":"spark.history.fs.logDirectory ",
+      "value":"{{ spark_hdfs_path }}"
+  }
+
+firewall_ports:
+  - "{{ spark_master_port }}"
+  - "{{ spark_history_ui_port }}"
+  - "{{ spark_web_port }}"

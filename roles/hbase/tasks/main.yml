@@ -1,0 +1,20 @@
+---
+- name: Create Hbase Path
+  file: 
+    path: "{{ item }}"
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - "{{ hbase_create_path }}"
+
+
+- include: install_hbase.yml
+  when: install_hbase
+
+- include: config_hbase.yml
+  when: config_hbase
+
+- include: redhat.yml
+  when: ansible_os_family == 'RedHat'

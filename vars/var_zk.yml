@@ -1,0 +1,27 @@
+---
+download_path: "files"                                # your local download path
+zookeeper_version: "3.5.8"                            # zookeeper version
+
+# zookeeper port
+leader_port: 12888
+vote_port: 13888
+client_port: 12181
+jmx_port: 11911
+random_port: "30001-65006"
+
+# firewall ports
+firewall_ports:
+  - "{{ leader_port }}"
+  - "{{ vote_port }}"
+  - "{{ client_port }}"
+  - "{{ jmx_port }}"
+  - "{{ random_port }}"
+
+# env path
+install_dir: "/home/{{ user }}"
+data_dir: "{{install_dir}}/zookeeper_storage"
+zookeeper_log_path: "{{install_dir}}/zookeeper_log"
+tmp_path: "/tmp"
+
+# host group
+zk_hosts: zookeeper                                   # the group define in hosts.ini

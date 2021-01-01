@@ -1,0 +1,10 @@
+---
+
+- name: Unzip Spark
+  unarchive: src={{ download_path }}/{{ spark_package_name}}.tgz dest={{ spark_path }} owner={{ user }} group={{ group }} mode=755 
+
+- name: Change Name
+  shell: mv {{ spark_path}}/{{ spark_package_name}} {{ spark_path }}/spark-{{spark_version}}
+
+- name: Change Owner
+  shell: "chown {{ user }}:{{ group }} {{ spark_path }}/spark-{{spark_version}} -R"

@@ -1,0 +1,13 @@
+---
+- hosts: zookeeper
+  user: root
+  vars_files:
+    - vars/user.yml
+    - vars/var_zk.yml
+  vars:
+    install_zk: true      
+    config_zk: true       
+    start_zk: true
+    open_firewall: false
+  roles:
+    - zookeeper 

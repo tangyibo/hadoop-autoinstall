@@ -1,0 +1,12 @@
+---
+- name: Copy Hbase Site
+  template: src=hbase-site.xml dest={{ hbase_config_path }} mode=644 owner={{ user }} group = {{ group }}
+
+- name: Copy Hbase Regionservers
+  template: src=regionservers dest={{ hbase_config_path }} mode=644 owner={{ user }} group = {{ group }}
+
+- name: Copy Hbase Env Script
+  template: src=hbase_env.sh dest=/etc/profile.d/ mode=755    
+
+- name: Set Hbase Env
+  shell: source /etc/profile.d/hbase_env.sh

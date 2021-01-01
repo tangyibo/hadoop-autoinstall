@@ -1,0 +1,23 @@
+---
+- name: Create Spark Path
+  file: 
+    path: "{{ item }}"
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - "{{ spark_create_path }}"
+
+- name: Install Scala
+  include: install_scala.yml
+  when: install_scala
+
+- include: install_spark.yml
+  when: install_spark
+
+- include: config_spark.yml
+  when: config_spark
+
+- include: redhat.yml
+  when: ansible_os_family == 'RedHat'

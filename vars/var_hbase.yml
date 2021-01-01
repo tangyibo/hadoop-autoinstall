@@ -1,0 +1,73 @@
+---
+# hbase basic vars
+download_path: "files"    # your local download path
+hbase_version: "1.4.13"                    # hbase version
+hbase_path: "/home/hadoop"                # install dir
+hbase_config_path: "/home/hadoop/hbase-{{hbase_version}}/conf"
+
+hbase_tmp: "{{ hbase_path }}/hbase/tmp"
+hbase_zookeeper_config_path: "{{ hbase_path }}/hbase/zookeeper"
+hbase_log_path: "{{ hbase_path }}/hbase/logs"
+
+hbase_create_path:
+  - "{{ hbase_tmp }}"
+  - "{{ hbase_zookeeper_config_path }}"
+  - "{{ hbase_log_path }}"
+
+
+# hbase configration 
+hbase_hdfs_path: "/hbase"
+zk_hosts: "zookeeper"                  #zookeeper group name in hosts/host
+zk_client_port: 12181                  #zookeeper client port
+
+hbase_master_port: 60000               #hbase port
+hbase_master_info_port: 60010
+hbase_regionserver_port: 60020
+hbase_regionserver_info_port: 60030
+hbase_rest_port: 8060
+
+
+hbase_site_properties:                 #property
+  - {
+      "name":"hbase.master",
+      "value":"{{ hbase_master_port }}"
+  }
+  - {
+      "name":"hbase.master.info.port",
+      "value":"{{ hbase_master_info_port }}"
+  }
+  - {
+      "name":"hbase.tmp.dir",
+      "value":"{{ hbase_tmp }}"
+  }
+  - {
+      "name":"hbase.rootdir",
+      "value":"hdfs://{{ master_hostname }}:{{ hdfs_port }}{{ hbase_hdfs_path }}"
+  }
+  - {
+      "name":"hbase.regionserver.port",
+      "value":"{{ hbase_regionserver_port }}"
+  }
+  - {
+      "name":"hbase.regionserver.info.port",
+      "value":"{{ hbase_regionserver_info_port }}"
+  }
+  - {
+      "name":"hbase.rest.port",
+      "value":"{{ hbase_rest_port }}"
+  }
+  - {
+      "name":"hbase.cluster.distributed",
+      "value":"true"
+  }
+  - {
+      "name":"hbase.zookeeper.quorum"
+  }
+
+
+firewall_ports:
+  - "{{ hbase_master_port }}"
+  - "{{ hbase_master_info_port }}"
+  - "{{ hbase_regionserver_port }}"
+  - "{{ hbase_regionserver_info_port }}"
+  - "{{ hbase_rest_port }}"

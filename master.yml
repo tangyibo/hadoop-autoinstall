@@ -1,0 +1,19 @@
+- hosts: master 
+  remote_user: root
+  vars_files:
+   - vars/user.yml
+   - vars/var_basic.yml
+   - vars/var_master.yml
+  vars:
+     add_user: true
+     generate_key: true
+     open_firewall: false
+     disable_firewall: true
+     install_hadoop: true
+     config_hadoop: true
+  roles:
+    - user
+    - fetch_public_key
+    - authorized
+    - java
+    - hadoop

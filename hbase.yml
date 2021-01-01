@@ -1,0 +1,13 @@
+- hosts: hbase 
+  remote_user: root
+  vars_files:
+   - vars/user.yml
+   - vars/var_basic.yml
+   - vars/var_master.yml
+   - vars/var_hbase.yml
+  vars:
+     open_firewall: false       # firewalld
+     install_hbase: true       # install hbase
+     config_hbase: true        # config hbase
+  roles:
+    - hbase

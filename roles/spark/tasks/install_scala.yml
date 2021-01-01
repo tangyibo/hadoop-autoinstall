@@ -1,0 +1,13 @@
+---
+
+- name: Unzip Scala
+  unarchive: src={{ download_path }}/scala-{{scala_version}}.tgz dest={{ scala_path }} owner={{ user }} group={{ group }} mode=755 
+
+- name: Change Owner
+  shell: "chown {{ user }}:{{ group }} {{ scala_path }}/scala-{{scala_version}} -R"
+
+- name: Copy Scala Env Script
+  template: src=scala_env.sh dest=/etc/profile.d/ mode=755    
+
+- name: Set Scala Env
+  shell: source /etc/profile.d/scala_env.sh

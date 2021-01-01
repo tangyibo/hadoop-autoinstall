@@ -1,0 +1,17 @@
+---
+- name: Copy Spark 
+  template: src=spark-defaults.conf dest={{ spark_config_path }} mode=644 owner={{ user }} group = {{ group }}
+
+- name: Copy Spark slave
+  template: src=slaves dest={{ spark_config_path }} mode=644 owner={{ user }} group = {{ group }}
+
+- name: Copy Spark Env Script
+  template: src=spark_env.sh dest=/etc/profile.d/ mode=755    
+
+- name: Set Spark Env
+  shell: source /etc/profile.d/spark_env.sh
+
+- name: Init Hdfs Path
+  shell: "source /etc/profile.d/java_home.sh && source /etc/profile.d/hadoop_env.sh && hadoop fs -mkdir -p {{ spark_hdfs_path }}"
+  become: yes
+  become_user: "{{ user }}"
