@@ -302,10 +302,6 @@ node3
 node4
 ```
 
-**注意**
-
-> 1.必须包含master节点
-
 (4). 查看spark.yml
 
 (5). 执行shell安装
