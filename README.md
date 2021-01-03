@@ -286,6 +286,10 @@ hbase shell
 hbase(main):001:0> create 'emp','id','name'
 ```
 
+(6). 浏览器访问WEB
+
+用浏览器访问地址： http://MASTER-IP:60010/
+
 ### 5、安装spark
 
 (1). 下载scala和spark到本机 {{ download_path }}
