@@ -69,7 +69,7 @@ ansible-playbook -i hosts.ini prepare.yml
 hdfs_site_properties:
   - {
       "name":"dfs.replication",
-      "value":"{{ groups['workers']|length }}"  # this is  the group "workers" you define in hosts/host
+      "value":"{{ groups['workers']|length }}"  # 副本数
   }
 ```
 
@@ -78,28 +78,6 @@ hdfs_site_properties:
 > 说明：这里 hadoop集群的master节点只能有一个
 
 (1). 查看master.yml
-
-```
-- hosts: master
-  remote_user: root
-  vars_files:
-   - vars/user.yml
-   - vars/var_basic.yml
-   - vars/var_master.yml
-  vars:
-     add_user: true           # add user "hadoop"
-     generate_key: true       # generate the ssh key
-     open_firewall: true      # for CentOS 7.x is firewalld
-     disable_firewall: false  # disable firewalld
-     install_hadoop: true     # install hadoop,if you just want to update the configuration, set to false
-     config_hadoop: true      # Update configuration
-  roles:
-    - user                    # add user and generate the ssh key
-    - fetch_public_key        # get the key and put it in your localhost
-    - authorized              # push the ssh key to the remote server
-    - java                    # install jdk
-    - hadoop                  # install hadoop
-```
 
 (2). 执行shell安装master节点
 
@@ -111,46 +89,13 @@ ansible-playbook -i hosts.ini master.yml
 
 (1). 查看 workers.yml
 
-```
-# Add Master Public Key   # get master ssh public key
-- hosts: master
-  remote_user: root
-  vars_files:
-   - vars/user.yml
-   - vars/var_basic.yml
-   - vars/var_workers.yml
-  roles:
-    - fetch_public_key
-
-- hosts: workers
-  remote_user: root
-  vars_files:
-   - vars/user.yml
-   - vars/var_basic.yml
-   - vars/var_workers.yml
-  vars:
-    add_user: true
-    generate_key: false # workers just use master ssh public key
-    open_firewall: false
-    disable_firewall: true  # disable firewall on workers
-    install_hadoop: true
-    config_hadoop: true
-  roles:
-    - user
-    - authorized
-    - java
-    - hadoop
-```
-
 (2). 执行shell安装workers节点:
 
 ```
-ansible-playbook -i hosts.ini workers.yml -e "master_ip=192.168.10.1 master_hostname=node1"
+ansible-playbook -i hosts.ini workers.yml -e "master_hostname=node1"
 ```
 
 **说明**
-
-> master_ip:  master节点的IP地址,示例为：192.168.10.1
 
 > master_hostname: master节点的主机名(hostname)，示例为：node1
 
@@ -161,12 +106,14 @@ ansible-playbook -i hosts.ini workers.yml -e "master_ip=192.168.10.1 master_host
 ```
 su - hadoop
 hadoop namenode -format
-sh start-all.sh
+start-all.sh
 ```
 
-并分别检查下每个机器节点进程是否已经正常启动：
+**说明：**不能使用sh start-all.sh启动，原因见：https://blog.csdn.net/JHC_binge/article/details/83547504
+
+并执行如下命令检查所有节点是否已经正常启动：
 ```
-jps -l
+ansible -i hosts.ini nodes -m shell -a "jps -l"
 ```
 
 启动完毕后，使用浏览器访问：
@@ -225,14 +172,14 @@ ansible-playbook -i hosts.ini hive.yml
 ```
 su - hadoop
 
-cd apache-hive-3.1.2-bin/lib
-
 # 这里解决jar包冲突问题，参考：https://blog.csdn.net/xiaozhu123412/article/details/106367859/
-rm -f guava-19.0.jar
-cp ~/hadoop-3.2.1/share/hadoop/common/lib/guava-27.0-jre.jar .
+rm -f $HADOOP_HOME/lib/guava-19.0.jar
+cp $HADOOP_HOME/share/hadoop/common/lib/guava-27.0-jre.jar $HIVE_HOME/lib/
 
-wget https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar
+# 下载mysql的jdbc驱动包
+wget -P $HIVE_HOME/lib/  https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar
 
+# 初始化mysql元数据库
 schematool -initSchema -dbType mysql
 ```
 
@@ -240,6 +187,29 @@ schematool -initSchema -dbType mysql
 
 ```
 hive -e " show databases"
+```
+
+(6). 开启hiveserve2进行jdbc连接
+
+```
+[root@localhost ~]# su - hadoop
+[hadoop@node1 ~]$ hiveserver2 >> ~/hiveserver2.log &
+[hadoop@node1 ~]$ beeline
+beeline> ! connect jdbc:hive2://127.0.0.1:10000
+Connecting to jdbc:hive2://127.0.0.1:10000
+Enter username for jdbc:hive2://127.0.0.1:10000: hadoop
+Enter password for jdbc:hive2://127.0.0.1:10000: ******
+Connected to: Apache Hive (version 3.1.2)
+Driver: Hive JDBC (version 3.1.2)
+Transaction isolation: TRANSACTION_REPEATABLE_READ
+0: jdbc:hive2://127.0.0.1:10000> show database
++----------------+
+| database_name  |
++----------------+
+| default        |
++----------------+
+1 row selected (0.583 seconds)
+0: jdbc:hive2://127.0.0.1:10000>
 ```
 
 ### 6、安装Zookeeper
@@ -286,17 +256,15 @@ hbase shell
 hbase(main):001:0> create 'emp','id','name'
 ```
 
-(6). 浏览器访问WEB
+(6). 浏览器访问WEB管理页
 
 用浏览器访问地址： http://MASTER-IP:60010/
 
 ### 5、安装spark
 
-(1). 下载scala和spark到本机 {{ download_path }}
+(1). 查看vars/var_spark.yml
 
-(2). 查看vars/var_spark.yml
-
-(3). 增加spark 到 hosts.ini
+(2). 增加spark 到 hosts.ini
 
 ```
 [spark]
@@ -306,9 +274,9 @@ node3
 node4
 ```
 
-(4). 查看spark.yml
+(3). 查看spark.yml
 
-(5). 执行shell安装
+(4). 执行shell安装
 
 ```
 ansible-playbook -i hosts.ini  spark.yml -e "master_hostname=node1"

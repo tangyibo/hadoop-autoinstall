@@ -1,6 +1,6 @@
 ---
 - name: Add User 
-  user: name={{user}} shell=/bin/bash append=yes
+  user: name={{user}} password={{ passwd | password_hash('sha512') }}  update_password=always shell=/bin/bash append=yes
   when: add_user
 
 - name: Check Public Key

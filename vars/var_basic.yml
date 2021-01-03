@@ -29,7 +29,7 @@ hdfs_port: 9000
 core_site_properties:
   - {
       "name":"fs.defaultFS",
-      "value":"hdfs://{{ master_ip }}:{{ hdfs_port }}"
+      "value":"hdfs://{{ master_hostname }}:{{ hdfs_port }}"
   }
   - {
       "name":"hadoop.tmp.dir",
@@ -38,6 +38,14 @@ core_site_properties:
   - {
     "name":"io.file.buffer.size",
     "value":"131072"
+  }
+  - {
+    "name":"hadoop.proxyuser.{{user}}.hosts",
+    "value":"*"
+  }
+  - {
+    "name":"hadoop.proxyuser.{{group}}.groups",
+    "value":"*"
   }
 
 dfs_namenode_httpport: 9001
