@@ -212,6 +212,10 @@ Transaction isolation: TRANSACTION_REPEATABLE_READ
 0: jdbc:hive2://127.0.0.1:10000>
 ```
 
+打开浏览器访问如下地址查看hiveserve2的监控界面：
+
+http://MASTER-IP:10002/
+
 ### 6、安装Zookeeper
 
 (1). 查看 vars/var_zk.yml的参数配置
