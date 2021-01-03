@@ -31,8 +31,8 @@
 使用yum安装ansible:
 
 ```
-yum install -y epel-release
-yum install -y ansible
+# yum install -y epel-release
+# yum install -y ansible
 ```
 
 - (2) 软件包下载：
@@ -40,7 +40,7 @@ yum install -y ansible
 执行如下命令联网下载软件包：
 
 ```
-sh files/download_files.sh
+# sh files/download_files.sh
 ```
 
 - (3) 配置hosts.ini配置文件
@@ -52,7 +52,7 @@ sh files/download_files.sh
 执行如下命令所有集群服务器/etc/hosts及root免密配置:
 
 ```
-ansible-playbook -i hosts.ini prepare.yml
+# ansible-playbook -i hosts.ini prepare.yml
 ```
 
 ## 三、安装 Hadoop
@@ -82,7 +82,7 @@ hdfs_site_properties:
 (2). 执行shell安装master节点
 
 ```
-ansible-playbook -i hosts.ini master.yml
+# ansible-playbook -i hosts.ini master.yml
 ```
 
 ### 3、安装 Workers
@@ -92,7 +92,7 @@ ansible-playbook -i hosts.ini master.yml
 (2). 执行shell安装workers节点:
 
 ```
-ansible-playbook -i hosts.ini workers.yml -e "master_hostname=node1"
+# ansible-playbook -i hosts.ini workers.yml -e "master_hostname=node1"
 ```
 
 **说明**
@@ -104,16 +104,16 @@ ansible-playbook -i hosts.ini workers.yml -e "master_hostname=node1"
 登录master节点，然后执行如下命令启动集群：
 
 ```
-su - hadoop
-hadoop namenode -format
-start-all.sh
+# su - hadoop
+$ hadoop namenode -format
+$ start-all.sh
 ```
 
 **说明：**不能使用sh start-all.sh启动，原因见：https://blog.csdn.net/JHC_binge/article/details/83547504
 
 并执行如下命令检查所有节点是否已经正常启动：
 ```
-ansible -i hosts.ini nodes -m shell -a "jps -l"
+# ansible -i hosts.ini nodes -m shell -a "jps -l"
 ```
 
 启动完毕后，使用浏览器访问：
@@ -130,10 +130,10 @@ ansible -i hosts.ini nodes -m shell -a "jps -l"
 (1). 在任意一个节点上（通常在Master节点）上使用docker方式快速安装MySQL
 
 ```
-sh sbin/docker_install.sh
-rm -rf /var/lib/mysql/data/ && mkdir -p /var/lib/mysql/data/
-docker pull mysql:5.7
-docker run --name mysqldb  -p 3306:3306 -d \
+# sh sbin/docker_install.sh
+# rm -rf /var/lib/mysql/data/ && mkdir -p /var/lib/mysql/data/
+# docker pull mysql:5.7
+# docker run --name mysqldb  -p 3306:3306 -d \
     -e MYSQL_ROOT_PASSWORD=123456 \
     -e MYSQL_DATABASE=hive  \
     -e MYSQL_USER=hive_user \
@@ -159,7 +159,7 @@ hive_connection_url: "jdbc:mysql://{{ hive_connection_host }}:{{ hive_connection
 (3). 执行shell安装hive：
 
 ```
-ansible-playbook -i hosts.ini hive.yml
+# ansible-playbook -i hosts.ini hive.yml
 ```
 
 **说明**
@@ -170,29 +170,29 @@ ansible-playbook -i hosts.ini hive.yml
 
 登录master节点后：
 ```
-su - hadoop
+# su - hadoop
 
 # 这里解决jar包冲突问题，参考：https://blog.csdn.net/xiaozhu123412/article/details/106367859/
-rm -f $HADOOP_HOME/lib/guava-19.0.jar
-cp $HADOOP_HOME/share/hadoop/common/lib/guava-27.0-jre.jar $HIVE_HOME/lib/
+$ rm -f $HADOOP_HOME/lib/guava-19.0.jar
+$ cp $HADOOP_HOME/share/hadoop/common/lib/guava-27.0-jre.jar $HIVE_HOME/lib/
 
 # 下载mysql的jdbc驱动包
-wget -P $HIVE_HOME/lib/  https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar
+$ wget -P $HIVE_HOME/lib/  https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar
 
 # 初始化mysql元数据库
-schematool -initSchema -dbType mysql
+$ schematool -initSchema -dbType mysql
 ```
 
 (5). hive测试
 
 ```
-hive -e " show databases"
+$ hive -e " show databases"
 ```
 
 (6). 开启hiveserve2进行jdbc连接
 
 ```
-[root@localhost ~]# su - hadoop
+[root@node1 ~]# su - hadoop
 [hadoop@node1 ~]$ hiveserver2 >> ~/hiveserver2.log &
 [hadoop@node1 ~]$ beeline
 beeline> ! connect jdbc:hive2://127.0.0.1:10000
@@ -219,7 +219,7 @@ Transaction isolation: TRANSACTION_REPEATABLE_READ
 (2). 执行shell命令安装hbase:
 
 ```
-ansible-playbook -i hosts.ini  zookeeper.yml
+# ansible-playbook -i hosts.ini  zookeeper.yml
 ```
 
 ### 7、安装Hbase
@@ -233,7 +233,7 @@ ansible-playbook -i hosts.ini  zookeeper.yml
 (3). 执行shell命令安装hbase:
 
 ```
-ansible-playbook -i hosts.ini  hbase.yml
+# ansible-playbook -i hosts.ini  hbase.yml
 ```
 
 **说明**
@@ -244,15 +244,15 @@ ansible-playbook -i hosts.ini  hbase.yml
 登录master节点,执行如下命令启动hbase:
 
 ```
-su - hadoop
-sh start-hbase.sh
+# su - hadoop
+$ sh start-hbase.sh
 ```
 
 (5). hbase测试
 
 ```
-su - hadoop
-hbase shell
+# su - hadoop
+$ hbase shell
 hbase(main):001:0> create 'emp','id','name'
 ```
 
@@ -279,7 +279,7 @@ node4
 (4). 执行shell安装
 
 ```
-ansible-playbook -i hosts.ini  spark.yml -e "master_hostname=node1"
+# ansible-playbook -i hosts.ini  spark.yml -e "master_hostname=node1"
 ```
 **说明**
 
