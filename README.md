@@ -173,7 +173,7 @@ hive_connection_url: "jdbc:mysql://{{ hive_connection_host }}:{{ hive_connection
 # su - hadoop
 
 # 这里解决jar包冲突问题，参考：https://blog.csdn.net/xiaozhu123412/article/details/106367859/
-$ rm -f $HADOOP_HOME/lib/guava-19.0.jar
+$ rm -f $HIVE_HOME/lib/guava-19.0.jar
 $ cp $HADOOP_HOME/share/hadoop/common/lib/guava-27.0-jre.jar $HIVE_HOME/lib/
 
 # 下载mysql的jdbc驱动包
