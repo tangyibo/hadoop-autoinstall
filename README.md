@@ -37,9 +37,11 @@
 
 - (2) 软件包下载：
 
-执行如下命令联网下载软件包：
+将本项目克隆到master节点上，执行如下命令联网下载软件包：
 
 ```
+# git clone https://github.com/tangyibo/hadoop-autoinstall.git
+# cd hadoop-autoinstall/
 # sh files/download_files.sh
 ```
 
