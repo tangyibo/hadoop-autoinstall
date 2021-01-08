@@ -216,6 +216,8 @@ Transaction isolation: TRANSACTION_REPEATABLE_READ
 
 http://MASTER-IP:10002/
 
+关于配置jdbc连接认证可参考文章： https://blog.csdn.net/lr131425/article/details/72628001
+
 ### 6、安装Zookeeper
 
 (1). 查看 vars/var_zk.yml的参数配置
