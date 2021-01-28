@@ -18,7 +18,7 @@
 
 - Hive 版本 3.1.2
 
-- Zookeeper 版本 3.5.8
+- Zookeeper 版本 3.5.9
 
 - Hbase 版本 1.4.13
 

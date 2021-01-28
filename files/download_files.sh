@@ -26,8 +26,8 @@ if [ ! -f "$SCRIPT_PATH/apache-hive-3.1.2-bin.tar.gz" ]; then
 fi
 
 # 下载Zookeeper
-if [ ! -f "$SCRIPT_PATH/apache-zookeeper-3.5.8-bin.tar.gz" ]; then
-    wget https://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.5.8/apache-zookeeper-3.5.8-bin.tar.gz &
+if [ ! -f "$SCRIPT_PATH/apache-zookeeper-3.5.9-bin.tar.gz" ]; then
+    wget https://mirror.bit.edu.cn/apache/zookeeper/stable/apache-zookeeper-3.5.9-bin.tar.gz &
 fi
 
 # 下载hbase软件包

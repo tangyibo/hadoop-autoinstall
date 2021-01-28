@@ -1,6 +1,6 @@
 ---
 download_path: "files"                                # your local download path
-zookeeper_version: "3.5.8"                            # zookeeper version
+zookeeper_version: "3.5.9"                            # zookeeper version
 
 # zookeeper port
 leader_port: 12888
