@@ -55,15 +55,18 @@
 或者到百度云盘下载：
 
 > 百度云盘下载地址：
+
 > 链接：https://pan.baidu.com/s/132YKx_WqsYSzVM_LU4-9Vg 
+
 > 提取码：vvvs 
+
 > 请将百度云盘中下载的文件放到files目录下
 
 - 3、配置hosts.ini配置文件
 
-安装文件格式配置主机IP及密码等，各个组件安装的节点等。
+按照文件格式配置主机IP及密码等，各个组件安装的节点等。
 
-- 4、root免密及集群主机hosts配置
+- 4、主机root免密及集群hosts配置
 
 执行如下命令配置所有集群服务器/etc/hosts及root免密配置等基础配置:
 
@@ -90,7 +93,9 @@ hdfs_site_properties:
 
 ### 2、安装 Hadoop(HDFS+YARN)
 
-> 安装hadoop集群的master节点，即HDFS的NameServer、SecondaryNameNode、ResourceManager所在节点，如果想要调整可直接修改vars/var_basic.yml里的配置：
+> 安装hadoop集群的master节点与worker节点，其中master节点即HDFS的NameServer、SecondaryNameNode、ResourceManager所在节点，worker节点即DataNode、NodeManager所在节点。
+
+> 如果想要调整可直接修改vars/var_basic.yml里的配置：
 
 ```
 # ansible-playbook -i hosts.ini hadoop.yml -e "master_hostname=node1"
@@ -99,6 +104,9 @@ hdfs_site_properties:
 **说明**
 
 > master_hostname: master节点的主机名(hostname)，示例为：node1
+
+> 如果需要调整NameServer、SecondaryNameNode、ResourceManager为不同主机节点，可直接在vars/var_basic.yml里配置
+
 
 ### 4、启动Hadoop集群
 
@@ -112,7 +120,7 @@ $ start-all.sh
 
 **说明：**不能使用sh start-all.sh启动，原因见：https://blog.csdn.net/JHC_binge/article/details/83547504
 
-并执行如下命令检查所有节点是否已经正常启动：
+并执行如下命令检查所有节点是否服务进程是否存在：
 ```
 # ansible -i hosts.ini nodes -m shell -a "jps -l"
 ```
@@ -148,7 +156,7 @@ $ start-all.sh
 # database
 db_type: "mysql"
 hive_connection_driver_name: "com.mysql.jdbc.Driver"
-hive_connection_host: "127.0.0.1"                # 这里填写MySQL的IP地址             
+hive_connection_host: "127.0.0.1"                            # 这里填写MySQL的IP地址             
 hive_connection_port: "3306"
 hive_connection_dbname: "hive"
 hive_connection_user_name: "hive_user"
