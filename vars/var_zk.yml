@@ -18,9 +18,9 @@ firewall_ports:
   - "{{ random_port }}"
 
 # env path
-install_dir: "/home/{{ user }}"
-data_dir: "{{install_dir}}/zookeeper_storage"
-zookeeper_log_path: "{{install_dir}}/zookeeper_log"
+install_dir: "/usr/local"
+data_dir: "{{install_dir}}/apache-zookeeper-{{ zookeeper_version }}-bin/storage"
+zookeeper_log_path: "{{install_dir}}//apache-zookeeper-{{ zookeeper_version }}-bin/log"
 tmp_path: "/tmp"
 
 # host group

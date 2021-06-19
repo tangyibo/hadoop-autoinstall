@@ -9,13 +9,13 @@ java_packages:
 
 # hadoop basic vars
 download_path: "files"
-hadoop_version: "3.2.1"
-hadoop_path: "/home/hadoop"
-hadoop_config_path: "/home/hadoop/hadoop-{{hadoop_version}}/etc/hadoop"
-hadoop_tmp: "/home/hadoop/tmp"
-hadoop_dfs_name: "/home/hadoop/dfs/name"
-hadoop_dfs_data: "/home/hadoop/dfs/data"
-hadoop_log_path: "/home/hadoop/hadoop_logs"
+hadoop_version: "3.1.3"
+hadoop_path: "/usr/local"
+hadoop_config_path: "/usr/local/hadoop-{{ hadoop_version }}/etc/hadoop"
+hadoop_tmp: "/usr/local/hadoop-{{ hadoop_version }}/tmp"
+hadoop_dfs_name: "/usr/local/hadoop-{{ hadoop_version }}/dfs/name"
+hadoop_dfs_data: "/usr/local/hadoop-{{ hadoop_version }}/dfs/data"
+hadoop_log_path: "/usr/local/hadoop-{{ hadoop_version }}/logs"
 
 hadoop_create_path:
   - "{{ hadoop_tmp }}"

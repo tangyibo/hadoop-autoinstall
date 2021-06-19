@@ -3,9 +3,9 @@
 # hive basic vars
 download_path: "files"
 hive_version: "3.1.2"
-hive_path: "/home/hadoop"
-hive_config_path: "/home/hadoop/apache-hive-{{hive_version}}-bin/conf"
-hive_tmp: "/home/hadoop/hive/tmp"
+hive_path: "/usr/local/hive"
+hive_config_path: "/usr/local/hive/apache-hive-{{hive_version}}-bin/conf"
+hive_tmp: "/usr/local/hive/apache-hive-{{hive_version}}-bin/tmp"
 
 hive_create_path:
   - "{{ hive_tmp }}"
@@ -19,7 +19,7 @@ hive_hdfs_path:
   - "{{ hive_scratchdir }}"
   - "{{ hive_querylog_location }}"
 
-hive_logging_operation_log_location: "{{ hive_tmp }}/{{ user }}/operation_logs"
+hive_logging_operation_log_location: "{{ hive_tmp }}/operation_logs"
 
 # database
 db_type: "mysql"

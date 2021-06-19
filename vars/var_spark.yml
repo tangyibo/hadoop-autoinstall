@@ -1,13 +1,13 @@
 ---
 # spark basic vars
 download_path: "files"    # your local download path
-spark_package_name: "spark-2.4.7-bin-hadoop2.7"
-spark_version: "2.4.7"                    # spark version
-spark_path: "/home/hadoop"                # install dir
-spark_config_path: "/home/hadoop/spark-{{spark_version}}/conf"
+spark_package_name: "spark-2.4.5-bin-without-hadoop"
+spark_version: "2.4.5"                    # spark version
+spark_path: "/usr/local"                  # install dir
+spark_config_path: "/usr/local/spark-{{spark_version}}-bin-without-hadoop/conf"
 
-spark_worker_path: "{{ spark_path }}/spark/worker"
-spark_log_path: "{{ spark_path }}/spark/logs"
+spark_worker_path: "{{ spark_path }}/spark-{{spark_version}}-bin-without-hadoop/worker"
+spark_log_path: "{{ spark_path }}/spark-{{spark_version}}-bin-without-hadoop/logs"
 
 master_hostname: "{{ master_hostname }}"
 
@@ -19,7 +19,7 @@ spark_create_path:
 
 #scala vars
 scala_path: "{{ spark_path }}"
-scala_version: "2.12.12"              # scala version
+scala_version: "2.12.14"              # scala version
 
 
 spark_master_port: 17077               #spark port
@@ -39,10 +39,6 @@ spark_properties:                     #property
   - {
       "name":"spark.eventLog.compress",
       "value":"true"
-  }
-  - {
-      "name":"spark.history.updateInterval",
-      "value":"5"
   }
   - {
       "name":"spark.history.ui.port",

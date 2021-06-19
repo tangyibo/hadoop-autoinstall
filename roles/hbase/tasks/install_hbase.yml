@@ -1,7 +1,11 @@
 ---
 
+- name: Copy Hbase
+  copy: src={{ download_path }}/hbase-{{hbase_version}}-bin.tar.gz dest=/tmp owner={{ user }} group={{ group }}  mode=755
+
 - name: Unzip Hbase
-  unarchive: src={{ download_path }}/hbase-{{hbase_version}}-bin.tar.gz dest={{ hbase_path }} owner={{ user }} group={{ group }} mode=755 
+  shell: "tar zxf /tmp/hbase-{{hbase_version}}-bin.tar.gz -C {{ hbase_path }}"
+  #unarchive: src={{ download_path }}/hbase-{{hbase_version}}-bin.tar.gz dest={{ hbase_path }} owner={{ user }} group={{ group }} mode=755 
 
 - name: Change Owner
   shell: "chown {{ user }}:{{ group }} {{ hbase_path }}/hbase-{{hbase_version}} -R"
